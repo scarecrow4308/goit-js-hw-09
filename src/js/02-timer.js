@@ -20,28 +20,46 @@ const hours = document.querySelector('span[data-hours]');
 const minutes = document.querySelector('span[data-minutes]');
 const seconds = document.querySelector('span[data-seconds]');
 
-const fp = flatpickr(dataPickerEl, {
+// btnEl.addEventListener('click', e => {
+//   btnEl.setAttribute('disabled', '');
+//   dataPickerEl.setAttribute('disabled', '');
+//   console.dir(flatpickr.onBtnClick);
+// });
+
+flatpickr(dataPickerEl, {
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    const idInterval = setInterval(() => {
-      const pickedDate = selectedDates[0].getTime();
-      const diff = pickedDate - Date.now();
+    btnEl.addEventListener('click', e => {
+      btnEl.setAttribute('disabled', '');
+      dataPickerEl.setAttribute('disabled', '');
 
-      if (diff <= 0) {
-        return;
-      }
+      setInterval(() => {
+        const pickedDate = selectedDates[0].getTime();
+        const diff = pickedDate - Date.now();
 
-      const diffDate = gettingTime(diff);
+        if (diff <= 0) {
+          return;
+        }
 
-      days.textContent = `${new String(diffDate.days).padStart(2, '0')}`;
-      hours.textContent = `${new String(diffDate.hours).padStart(2, '0')}`;
-      minutes.textContent = `${new String(diffDate.minutes).padStart(2, '0')}`;
-      seconds.textContent = `${new String(diffDate.seconds).padStart(2, '0')}`;
-    }, 1000);
+        const diffDate = gettingTime(diff);
+
+        days.textContent = `${new String(diffDate.days).padStart(2, '0')}`;
+        hours.textContent = `${new String(diffDate.hours).padStart(2, '0')}`;
+        minutes.textContent = `${new String(diffDate.minutes).padStart(
+          2,
+          '0'
+        )}`;
+        seconds.textContent = `${new String(diffDate.seconds).padStart(
+          2,
+          '0'
+        )}`;
+      }, 1000);
+    });
   },
+
   onChange(selectedDates) {
     const pickedDate = selectedDates[0].getTime();
     const diff = pickedDate - Date.now();
@@ -49,8 +67,6 @@ const fp = flatpickr(dataPickerEl, {
       btnEl.removeAttribute('disabled');
       return;
     }
-
-    btnEl.setAttribute('disabled', '');
 
     if (diff <= 0) {
       Notiflix.Report.failure(

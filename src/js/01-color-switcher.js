@@ -13,12 +13,17 @@ const bodyChangeColor = function () {
   ).style = `background-color: ${getRandomHexColor()}`;
 };
 
+stopBtnEl.setAttribute('disabled', '');
+
 startBtnEl.addEventListener('click', e => {
+  bodyChangeColor();
   const loopColorChange = setInterval(bodyChangeColor, 1000);
   startBtnEl.setAttribute('disabled', '');
+  stopBtnEl.removeAttribute('disabled');
 
   stopBtnEl.addEventListener('click', event => {
     clearInterval(loopColorChange);
     startBtnEl.removeAttribute('disabled');
+    stopBtnEl.setAttribute('disabled', '');
   });
 });
