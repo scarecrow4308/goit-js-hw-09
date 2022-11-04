@@ -23,20 +23,14 @@ const form = document.querySelector('form');
 form.addEventListener('submit', e => {
   e.preventDefault();
   let delay = Number(inputDelayEl.value);
-  let promisePosition = 1;
   for (let i = 1; i <= Number(inputAmountEl.value); i += 1) {
-    createPromise(promisePosition, delay)
-      .then(({ promisePosition, delay }) => {
-        Notiflix.Notify.success(
-          `Fulfilled promise ${promisePosition} in ${delay}ms`
-        );
+    createPromise(i, delay)
+      .then(({ position, delay }) => {
+        Notiflix.Notify.success(`Fulfilled promise ${position} in ${delay}ms`);
       })
-      .catch(({ promisePosition, delay }) => {
-        Notiflix.Notify.failure(
-          `Rejected promise ${promisePosition} in ${delay}ms`
-        );
+      .catch(({ position, delay }) => {
+        Notiflix.Notify.failure(`Rejected promise ${position} in ${delay}ms`);
       });
     delay += Number(inputStepEl.value);
-    promisePosition = i + 1;
   }
 });

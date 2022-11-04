@@ -25,6 +25,7 @@ const seconds = document.querySelector('span[data-seconds]');
 //   dataPickerEl.setAttribute('disabled', '');
 //   console.dir(flatpickr.onBtnClick);
 // });
+let currentInterval = null;
 
 flatpickr(dataPickerEl, {
   enableTime: true,
@@ -34,13 +35,17 @@ flatpickr(dataPickerEl, {
   onClose(selectedDates) {
     btnEl.addEventListener('click', e => {
       btnEl.setAttribute('disabled', '');
-      dataPickerEl.setAttribute('disabled', '');
 
-      setInterval(() => {
+      if (currentInterval !== null) {
+        clearInterval(currentInterval);
+      }
+
+      currentInterval = setInterval(() => {
         const pickedDate = selectedDates[0].getTime();
         const diff = pickedDate - Date.now();
 
         if (diff <= 0) {
+          btnEl.removeAttribute('disabled');
           return;
         }
 
@@ -74,6 +79,7 @@ flatpickr(dataPickerEl, {
         'Please choose a date in the future',
         'Close'
       );
+      btnEl.setAttribute('disabled', '');
       return;
     }
   },
