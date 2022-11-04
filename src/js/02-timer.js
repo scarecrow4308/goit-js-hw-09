@@ -40,7 +40,7 @@ flatpickr(dataPickerEl, {
         clearInterval(currentInterval);
       }
 
-      currentInterval = setInterval(() => {
+      const timerFunc = () => {
         const pickedDate = selectedDates[0].getTime();
         const diff = pickedDate - Date.now();
 
@@ -61,7 +61,10 @@ flatpickr(dataPickerEl, {
           2,
           '0'
         )}`;
-      }, 1000);
+      };
+
+      timerFunc();
+      currentInterval = setInterval(timerFunc, 1000);
     });
   },
 
